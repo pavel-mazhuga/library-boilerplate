@@ -3,11 +3,9 @@ import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import { eslint } from 'rollup-plugin-eslint';
 import multiInput from 'rollup-plugin-multi-input';
-import pkg from './package.json';
+import peerDepsExternal from 'rollup-plugin-peer-deps-external';
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
-
-const external = [...Object.keys(pkg.dependencies || {}), ...Object.keys(pkg.peerDependencies || {})];
 
 export default {
     input: ['src/index.ts', 'src/modules/**/*.ts'],
@@ -17,8 +15,8 @@ export default {
             format: 'esm',
         },
     ],
-    external,
     plugins: [
+        peerDepsExternal(),
         multiInput(),
         resolve({ extensions }),
         eslint(),
